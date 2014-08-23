@@ -2,6 +2,6 @@
 require("game/game")
 
 local toload = {
-	--{ SpaceShip = "game/classes/spaceship" },
+	{ Person = "game/classes/person" },
 }
 package.loadSwappable( toload )
