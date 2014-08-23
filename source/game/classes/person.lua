@@ -17,6 +17,8 @@ local state = {
 	loving = { face = ":3", color = Color.PaleVioletRed }
 }
 
+local face_font = love.graphics.newFont( 16 )
+
 function Person:initialize( world )
 
 	Entity.initialize( self )
@@ -48,21 +50,22 @@ end
 
 function Person:draw()
 	
-	local font = love.graphics.getFont()
-	local fw, fh = font:getWidth( state[self.state].face ), font:getHeight()
+	local fw, fh = face_font:getWidth( state[self.state].face ), face_font:getHeight()
 	local ang = self:getAngle()
 	local d = math.sqrt( fw * fw + fh * fh ) / 2
 	local fx, fy = (angle.forward( ang + (math.pi / 4) ) * d):unpack()
 	
 	local oldcol = { love.graphics.getColor() }
+	local oldfont = love.graphics.getFont()
 	
 	love.graphics.setColor( state[self.state].color:unpack() )
-			
+	love.graphics.setFont( face_font )
+	
 	local x, y = self:getPos()
 	love.graphics.circle( "line", x, y, self.radius, 32 )
 	love.graphics.print( state[self.state].face, x - fx, y - fy, ang )
 	
-	love.graphics.print( self:getEntIndex(), x - 6, y - 22 )
+	--love.graphics.print( self:getEntIndex(), x - 6, y - 22 )
 	
 	--love.graphics.line( x, y, x - fx, y - fy )
 	--love.graphics.line( x, y, x + 4, y )
@@ -70,6 +73,7 @@ function Person:draw()
 	--love.graphics.print( (ang % (math.pi * 2)), x, y - 40 )
 	
 	love.graphics.setColor( unpack( oldcol ) )
+	love.graphics.setFont( oldfont )
 	
 end
 
@@ -78,9 +82,15 @@ function Person:computeState()
 	local scale = self:getEmotionScale()
 	self.state = "neutral"
 	
+	self:getBody():setLinearDamping( 0 )
+	
 	if (self.emotion == "happiness") then
-		if (scale < 0.25) then self.state = "depressed"
-		elseif (scale < 0.5) then self.state = "sad"
+		if (scale < 0.25) then 
+			self.state = "depressed"
+			self:getBody():setLinearDamping( 10 )
+		elseif (scale < 0.5) then 
+			self.state = "sad"
+			self:getBody():setLinearDamping( 0.5 )
 		elseif (scale >= 0.5) then self.state = "content"
 		elseif (scale >= 0.75) then self.state = "happy"
 		end
@@ -112,9 +122,9 @@ function Person:connectTo( otherPerson )
 	if (otherPerson.emotion == self.emotion) then
 		local diff = otherPerson:getEmotionScale() - self:getEmotionScale()
 		
-		if (diff > 0) then
+		if (diff > 0 and otherPerson:getEmotionScale() >= 0.5) then
 			self.boost_emotionscale = self.boost_emotionscale + 0.25
-		else
+		elseif (diff < 0 and self:getEmotionScale() >= 0.5) then
 			otherPerson.boost_emotionscale = otherPerson.boost_emotionscale + 0.25
 		end
 	end	

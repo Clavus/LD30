@@ -23,7 +23,7 @@ end
 function Connection:draw()
 
 	local oldcol = { love.graphics.getColor() }
-	love.graphics.setColor( 255, 200, 200 )
+	love.graphics.setColor( 255, 200, 200, 20 )
 	
 	love.graphics.line( self.joint:getAnchors() )
 	
