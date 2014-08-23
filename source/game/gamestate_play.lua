@@ -1,7 +1,7 @@
 
 local play = gamestate.new("play")
 local gui, player, world, physics
-local last_mousex, last_mousey
+local last_mousex, last_mousey, grabbed_person
 
 function play:init()
 
@@ -44,6 +44,7 @@ end
 
 function play:update( dt )
 	
+	-- Camera draggin
 	local mx, my = screen.getMousePosition()
 	local dmx, dmy = mx - last_mousex, my - last_mousey
 	last_mousex, last_mousey = mx, my
@@ -53,6 +54,37 @@ function play:update( dt )
 		level:getCamera():move( -dmx, -dmy )
 		
 	end
+	
+	-- Pushing people
+	if (input:mouseIsPressed( MOUSE.LEFT )) then
+		local wmx, wmy = level:getCamera():getMouseWorldPos()
+	
+		world:queryBoundingBox( wmx, wmy, wmx+1, wmy+1, function( fix )
+			if (fix:testPoint( wmx, wmy )) then
+				local owner = fix:getUserData() or fix:getBody():getUserData()
+				if (owner:isInstanceOf( Person )) then
+					print("Selected "..owner:getEntIndex())
+					grabbed_person = owner
+					return true
+				end
+			end
+			return false
+		end )
+		
+	end
+	
+	if (input:mouseIsReleased( MOUSE.LEFT )) then
+		if (grabbed_person) then
+			local wmx, wmy = level:getCamera():getMouseWorldPos()
+			local body = grabbed_person:getBody()
+			local bx, by = grabbed_person:getPos()
+			local lvec = Vector( wmx - bx, wmy - by )
+			
+			body:applyLinearImpulse( lvec:unpack() )
+			
+			grabbed_person = nil
+		end
+	end	
 	
 	level:update( dt )
 	gui:update( dt )
@@ -64,6 +96,20 @@ function play:draw()
 
 	level:draw()
 	gui:draw()
+	
+	level:getCamera():draw( function()
+		if (grabbed_person) then
+			local wmx, wmy = level:getCamera():getMouseWorldPos()
+			local bx, by = grabbed_person:getPos()
+			
+			local oldcol = { love.graphics.getColor() }
+			love.graphics.setColor( 200, 255, 200 )
+	
+			love.graphics.line( wmx, wmy, bx, by )
+	
+			love.graphics.setColor( unpack( oldcol ) )
+		end		
+	end )
 	
 end
 

@@ -25,7 +25,6 @@ function Connection:draw()
 	
 	love.graphics.line( self.joint:getAnchors() )
 	
-	
 	love.graphics.setColor( unpack( oldcol ) )
 	
 end
