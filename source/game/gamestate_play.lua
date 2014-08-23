@@ -1,6 +1,7 @@
 
 local play = gamestate.new("play")
-local gui, level, player, world, physics
+local gui, player, world, physics
+local last_mousex, last_mousey
 
 function play:init()
 
@@ -20,14 +21,16 @@ function play:init()
 	world = physics:getWorld()
 	world:setGravity(0, 0)
 	
-	for i = 0, 20 do
+	for i = 0, 10 do
 		local person = level:createEntity( "Person", world )
 		
-		local dir = math.randomRange( 0, 2 * math.pi )
-		local vec = angle.forward( dir ) * (60 * i - (10 + 20 * math.random()))
+		local dir = math.randomRange( 0, math.pi * ((i % 2) + math.random()) )
+		local vec = angle.forward( dir ) * (40 * i - (10 + 20 * math.random()))
 		
 		person:setPos( vec.x, vec.y )
 	end
+	
+	last_mousex, last_mousey = screen.getMousePosition()
 	
 end
 
@@ -40,6 +43,16 @@ function play:leave()
 end
 
 function play:update( dt )
+	
+	local mx, my = screen.getMousePosition()
+	local dmx, dmy = mx - last_mousex, my - last_mousey
+	last_mousex, last_mousey = mx, my
+	
+	if (input:mouseIsDown( MOUSE.RIGHT )) then
+		
+		level:getCamera():move( -dmx, -dmy )
+		
+	end
 	
 	level:update( dt )
 	gui:update( dt )
