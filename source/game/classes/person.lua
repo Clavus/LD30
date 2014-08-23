@@ -3,6 +3,20 @@ local Person = class("Person", Entity)
 Person:include( PhysicsActor )
 Person:include( CollisionResolver )
 
+local state = {
+	neutral = { face = ":|", color = Color.Gray },
+
+	depressed = { face = "._.", color = Color.SlateBlue },
+	sad = { face = ":(", color = Color.SteelBlue },
+	content = { face = ":)", color = Color.ForestGreen },
+	happy = { face = ":D", color = Color.Lime },
+	
+	angry = { face = ">:(", color = Color.Maroon },
+	uncaring = { face = ":/", color = Color.Brown },
+	interested = { face = ":o", color = Color.Pink },
+	loving = { face = ":3", color = Color.PaleVioletRed }
+}
+
 function Person:initialize( world )
 
 	Entity.initialize( self )
@@ -13,7 +27,10 @@ function Person:initialize( world )
 	
 	local fixture = love.physics.newFixture( self:getBody(), self.shape )
 	
-	self.face = util.choose( ":|", ":)", ":D", "._.", ":3", ">:)" )
+	self.emotion = util.choose("happiness", "loving")
+	self.base_emotionscale = util.choose(0.2, 0.45, 0.7, 0.95)
+	self.boost_emotionscale = 0
+	self:computeState()
 	
 	local impulse = angle.forward( math.random() * math.pi * 2 ) * (math.random() * 100)
 	
@@ -32,14 +49,18 @@ end
 function Person:draw()
 	
 	local font = love.graphics.getFont()
-	local fw, fh = font:getWidth( self.face ), font:getHeight()
-	local ang = currentTime()
+	local fw, fh = font:getWidth( state[self.state].face ), font:getHeight()
+	local ang = self:getAngle()
 	local d = math.sqrt( fw * fw + fh * fh ) / 2
 	local fx, fy = (angle.forward( ang + (math.pi / 4) ) * d):unpack()
 	
+	local oldcol = { love.graphics.getColor() }
+	
+	love.graphics.setColor( state[self.state].color:unpack() )
+			
 	local x, y = self:getPos()
 	love.graphics.circle( "line", x, y, self.radius, 32 )
-	love.graphics.print( self.face, x - fx, y - fy, ang )
+	love.graphics.print( state[self.state].face, x - fx, y - fy, ang )
 	
 	love.graphics.print( self:getEntIndex(), x - 6, y - 22 )
 	
@@ -48,18 +69,59 @@ function Person:draw()
 	--love.graphics.line( x, y, x, y + 4 )
 	--love.graphics.print( (ang % (math.pi * 2)), x, y - 40 )
 	
+	love.graphics.setColor( unpack( oldcol ) )
+	
+end
+
+function Person:computeState()
+	
+	local scale = self:getEmotionScale()
+	self.state = "neutral"
+	
+	if (self.emotion == "happiness") then
+		if (scale < 0.25) then self.state = "depressed"
+		elseif (scale < 0.5) then self.state = "sad"
+		elseif (scale >= 0.5) then self.state = "content"
+		elseif (scale >= 0.75) then self.state = "happy"
+		end
+	else
+		if (scale < 0.25) then self.state = "angry"
+		elseif (scale < 0.5) then self.state = "uncaring"
+		elseif (scale >= 0.5) then self.state = "interested"
+		elseif (scale >= 0.75) then self.state = "loving"
+		end
+	end
+	
+end
+
+function Person:getEmotionScale()
+	
+	return self.base_emotionscale + self.boost_emotionscale
+	
 end
 
 function Person:connectTo( otherPerson )
 	
 	if (self:isConnectedTo( otherPerson )) then return end
 	
-	print(self:getEntIndex().." and "..otherPerson:getEntIndex().." connected!")
-	
 	local conn = level:createEntity( "Connection", self, otherPerson )
 	table.insert( self.connections, conn )
 	table.insert( otherPerson.connections, conn )
-
+	
+	-- give emotion boost
+	if (otherPerson.emotion == self.emotion) then
+		local diff = otherPerson:getEmotionScale() - self:getEmotionScale()
+		
+		if (diff > 0) then
+			self.boost_emotionscale = self.boost_emotionscale + 0.25
+		else
+			otherPerson.boost_emotionscale = otherPerson.boost_emotionscale + 0.25
+		end
+	end	
+	
+	self:computeState()
+	otherPerson:computeState()
+	
 end
 
 function Person:isConnectedTo( otherPerson )
@@ -80,6 +142,12 @@ function Person:setRadius( r )
 
 	self.radius = r
 	self.shape:setRadius( r )
+
+end
+
+function Person:getRadius()
+
+	return self.radius
 
 end
 

@@ -10,11 +10,13 @@ function Connection:initialize( person1, person2 )
 	
 	local x1, y1 = person1:getPos()
 	local x2, y2 = person2:getPos()
-	self.joint = love.physics.newRopeJoint( person1:getBody(), person2:getBody(), x1, y1, x2, y2, 64, true )
+	self.joint = love.physics.newRopeJoint( person1:getBody(), person2:getBody(), x1, y1, x2, y2, person1:getRadius() + person2:getRadius(), true )
 	
 end
 
 function Connection:update()
+
+	self:setPos( self.person1:getPos() )
 
 end
 
