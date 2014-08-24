@@ -7,7 +7,7 @@
   <object type="CameraStartPos" x="1719" y="1243"/>
   <object type="Text" x="1718" y="1152">
    <properties>
-    <property name="string" value="Thanks for playing!"/>
+    <property name="string" value="Final level... thanks for playing!"/>
    </properties>
   </object>
   <object type="Wall" x="1636" y="1190" width="160" height="128"/>

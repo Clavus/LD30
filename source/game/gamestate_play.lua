@@ -17,6 +17,9 @@ local arrow_color = Color(200, 255, 200)
 local attempts_font = love.graphics.newFont(32)
 local attempts_subfont = love.graphics.newFont(20)
 
+local sound_levelswitch
+local sound_launch
+
 function play:init()
 	
 	-- Create level with physics world
@@ -38,6 +41,12 @@ function play:init()
 	end]]--
 	
 	last_mousex, last_mousey = screen.getMousePosition()
+	
+	sound_levelswitch = resource.getSound(FOLDER.ASSETS.."level_switch.wav", "static")
+	sound_levelswitch:setVolume( 0.5 )
+	
+	sound_launch = resource.getSound(FOLDER.ASSETS.."launch.wav", "static")
+	sound_launch:setVolume( 0.8 )
 	
 	input:addMousePressCallback("zoomin", MOUSE.WHEELUP, function()
 		local cam = level:getCamera()
@@ -174,9 +183,11 @@ function play:switchToLevel( num )
 	if ( switching_level ) then return end
 	switching_level = true
 	
+	sound_levelswitch:play()
+	
 	local state = self
 	print("Switching to level "..num)
-	timer.tween(1, fade_color, { alpha = 255 }, 'in-out-quad', function()
+	timer.tween(2, fade_color, { alpha = 255 }, 'in-out-quad', function()
 		state:preloadLevel( num )
 		state:startLevel( num )
 		level:spawnObjects()
@@ -254,12 +265,15 @@ function play:update( dt )
 			local body = grabbed_person:getBody()
 			local bx, by = grabbed_person:getPos()
 			local disvec = Vector( wmx - bx, wmy - by )
+			local dl = disvec:length()
 			
-			if (disvec:length() > grabbed_person:getRadius()) then
+			if (dl > grabbed_person:getRadius()) then
 			
 				local lvec = disvec * 3
 				
 				body:applyLinearImpulse( lvec:unpack() )
+				sound_launch:setPitch( 0.8 + math.min(dl / 1000, 0.4) )
+				sound_launch:play()
 				
 				if (attempts_left > 0) then
 					attempts_left = attempts_left - 1

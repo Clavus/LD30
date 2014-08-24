@@ -31,20 +31,6 @@ return {
         },
         {
           name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1765,
-          y = 206,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "angry"
-          }
-        },
-        {
-          name = "",
           type = "Text",
           shape = "rectangle",
           x = 1602,
@@ -99,104 +85,6 @@ return {
           height = 46,
           visible = true,
           properties = {}
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1380,
-          y = 213,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "depressed"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1440,
-          y = 212,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "sad"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1498,
-          y = 207,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "content"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1560,
-          y = 193,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "happy"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1823,
-          y = 203,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "uncaring"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1889,
-          y = 201,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "interested"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1962,
-          y = 195,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "loving"
-          }
         },
         {
           name = "",

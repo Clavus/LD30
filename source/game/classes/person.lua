@@ -41,7 +41,13 @@ function Person:initialize( world )
 	self.img_aura_dark = resource.getImage(FOLDER.ASSETS.."aura_dark.png")
 	self.light_scale = (self.base_emotionscale > 0.5 and 1 or 0)
 	
-	--self.snd_loveupgrade = resource.getSound(FOLDER.ASSETS.."
+	self.snd_hit = resource.getSound(FOLDER.ASSETS.."hit4.wav", "static", true)
+	self.snd_loveupgrade = resource.getSound(FOLDER.ASSETS.."hit2.wav", "static", true)
+	self.snd_happyupgrade = resource.getSound(FOLDER.ASSETS.."hit.wav", "static", true)
+	self.snd_bounce = resource.getSound(FOLDER.ASSETS.."bounce.wav", "static", true)
+	
+	self.snd_hit:setVolume( 0.7 )
+	self.snd_bounce:setVolume( 0.6 )
 	
 	--local impulse = angle.forward( math.random() * math.pi * 2 ) * (math.random() * 100)
 	--self:getBody():applyLinearImpulse( impulse.x, impulse.y )
@@ -184,21 +190,43 @@ function Person:connectTo( otherPerson )
 	-- give emotion boost
 	if (otherPerson.emotion == self.emotion) then
 		local diff = otherPerson:getEmotionScale() - self:getEmotionScale()
+		local upgraded = false
 		
 		if (diff > 0) then
 			if (otherPerson:getEmotionScale() >= 0.75) then
 				self.boost_emotionscale = math.min(0.95, self.boost_emotionscale + 0.5)
+				upgraded = true
 			elseif (otherPerson:getEmotionScale() >= 0.5) then
 				self.boost_emotionscale = math.min(0.95, self.boost_emotionscale + 0.25)
+				upgraded = true
 			end
 		elseif (diff < 0) then
 			if (self:getEmotionScale() >= 0.75) then
 				otherPerson.boost_emotionscale = math.min(0.95, otherPerson.boost_emotionscale + 0.5)
+				upgraded = true
 			elseif (self:getEmotionScale() >= 0.5) then
 				otherPerson.boost_emotionscale = math.min(0.95, otherPerson.boost_emotionscale + 0.25)
+				upgraded = true
 			end
 		end
-	end	
+		
+		if (upgraded) then
+			if (self.emotion == "loving") then
+				self.snd_loveupgrade:stop()
+				self.snd_loveupgrade:play()			
+			elseif(self.emotion == "happiness") then
+				self.snd_happyupgrade:stop()
+				self.snd_happyupgrade:play()			
+			end	
+		else
+			self.snd_hit:stop()
+			self.snd_hit:play()
+		end	
+		
+	else
+		self.snd_hit:stop()
+		self.snd_hit:play()
+	end
 	
 	self:computeState()
 	otherPerson:computeState()
@@ -238,6 +266,12 @@ function Person:beginContactWith( other, contact, myFixture, otherFixture, selfI
 
 	if (other:isInstanceOf( Person )) then
 		timer.add( 0, function() self:connectTo( other ) end )
+	end
+	
+	if (other:isInstanceOf( Wall )) then
+		self.snd_bounce:stop()
+		self.snd_bounce:setPitch( 0.9 + 0.2*math.random() )
+		self.snd_bounce:play()
 	end
 
 end

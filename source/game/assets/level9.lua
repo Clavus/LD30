@@ -39,7 +39,7 @@ return {
           height = 0,
           visible = true,
           properties = {
-            ["string"] = "Thanks for playing!"
+            ["string"] = "Final level... thanks for playing!"
           }
         },
         {
