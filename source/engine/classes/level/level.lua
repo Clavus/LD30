@@ -13,7 +13,7 @@ function Level:initialize( leveldata )
 	
 end
 
-function Level:loadObjects()
+function Level:spawnObjects()
 	
 	local objects = nil
 	if (self._leveldata) then

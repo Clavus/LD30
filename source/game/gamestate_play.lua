@@ -1,18 +1,26 @@
 
 local play = gamestate.new("play")
+local lg = love.graphics
 local gui, player, world, physics
 local last_mousex, last_mousey, grabbed_person, spectate_person
 
 local current_level_num = 1
 local available_levels = {}
-local num_levels = 6
+local num_levels = 9
 local switching_level = false
 
 local fade_color = { alpha = 0 }
 
+local attempts_left = -1
+local arrow_color = Color(200, 255, 200)
+
+local attempts_font = love.graphics.newFont(32)
+local attempts_subfont = love.graphics.newFont(20)
+
 function play:init()
 	
 	-- Create level with physics world
+	gui = GUI()
 	
 	for i=1, num_levels do
 		self:preloadLevel( i )
@@ -66,6 +74,7 @@ function play:init()
 		
 	end)
 	
+	-- restart button
 	local state = self
 	input:addKeyPressCallback("restart", "r", function()
 		
@@ -74,6 +83,7 @@ function play:init()
 		
 	end)
 	
+	-- level end condition
 	signal.register("connection_made", function( person, otherPerson )
 		if ( switching_level ) then return end
 		-- check if everyone's happy
@@ -92,6 +102,33 @@ function play:init()
 		end
 		
 	end)
+	
+	-- gui counter
+	gui:addDynamicElement( "counter", 0, 0, 0, function()
+		
+		if (attempts_left < 0) then return end
+		local x, y = screen.getRenderWidth() / 2, 0
+		local attempts_str = tostring(attempts_left)
+		local msg_str = "No more attempts... press R to restart"
+		local oldfont = lg.getFont()
+		
+		lg.setColor( arrow_color:unpack() )
+		lg.setFont(attempts_font)
+		
+		local w = attempts_font:getWidth(attempts_str)
+		lg.print(attempts_str, x-w/2, y+10)
+		
+		if (attempts_left == 0) then
+			lg.setFont(attempts_subfont)
+			w = attempts_subfont:getWidth(msg_str)
+			lg.print(msg_str, x-w/2, y+42)
+		end
+		
+		lg.setFont( oldfont )
+		lg.setColor( Color.White:unpack() )
+		
+	end)
+	
 	
 	input:registerAction( "switch_level" )
 	input:bindActionToKey( "switch_level", "1" )
@@ -125,7 +162,7 @@ function play:preloadLevel( num )
 	local loaded_world = loaded_physics:getWorld()
 	loaded_world:setGravity(0, 0)
 	
-	available_levels[num] = { level = loaded_level, physics = loaded_physics, world = loaded_world, gui = GUI() }
+	available_levels[num] = { level = loaded_level, physics = loaded_physics, world = loaded_world }
 	
 	print("Loaded level "..num.." data")
 	
@@ -142,7 +179,7 @@ function play:switchToLevel( num )
 	timer.tween(1, fade_color, { alpha = 255 }, 'in-out-quad', function()
 		state:preloadLevel( num )
 		state:startLevel( num )
-		level:loadObjects()
+		level:spawnObjects()
 	end)
 	
 end
@@ -150,20 +187,21 @@ end
 function play:startLevel( num )
 	
 	current_level_num = num
-	
+	spectate_person = nil
 	switching_level = false
 	timer.tween(0.25, fade_color, { alpha = 0 }, 'in-out-quad')
 	
 	level = available_levels[num].level
 	physics = available_levels[num].physics
 	world = available_levels[num].world
-	gui = available_levels[num].gui
+	
+	attempts_left = tonumber(level:getProperties()["max_attempts"] or -1)
 	
 end
 
 function play:enter()
 	
-	level:loadObjects()
+	level:spawnObjects()
 	
 end
 
@@ -193,7 +231,7 @@ function play:update( dt )
 	end
 	
 	-- Pushing people
-	if (input:mouseIsPressed( MOUSE.LEFT )) then
+	if (input:mouseIsPressed( MOUSE.LEFT ) and attempts_left ~= 0) then
 		local wmx, wmy = level:getCamera():getMouseWorldPos()
 	
 		world:queryBoundingBox( wmx, wmy, wmx+1, wmy+1, function( fix )
@@ -215,11 +253,21 @@ function play:update( dt )
 			local wmx, wmy = level:getCamera():getMouseWorldPos()
 			local body = grabbed_person:getBody()
 			local bx, by = grabbed_person:getPos()
-			local lvec = Vector( wmx - bx, wmy - by ) * 3
+			local disvec = Vector( wmx - bx, wmy - by )
 			
-			body:applyLinearImpulse( lvec:unpack() )
+			if (disvec:length() > grabbed_person:getRadius()) then
+			
+				local lvec = disvec * 3
+				
+				body:applyLinearImpulse( lvec:unpack() )
+				
+				if (attempts_left > 0) then
+					attempts_left = attempts_left - 1
+				end
+			end
 			
 			grabbed_person = nil
+			
 		end
 	end	
 	
@@ -239,20 +287,20 @@ function play:draw()
 			local wmx, wmy = level:getCamera():getMouseWorldPos()
 			local bx, by = grabbed_person:getPos()
 			
-			local oldcol = { love.graphics.getColor() }
-			love.graphics.setColor( 200, 255, 200 )
+			local oldcol = { lg.getColor() }
+			lg.setColor( arrow_color:unpack() )
 	
-			--love.graphics.line( wmx, wmy, bx, by )
+			--lg.line( wmx, wmy, bx, by )
 			
 			graphics.arrow( bx, by, wmx, wmy, 20, 16 )
 			
-			love.graphics.setColor( unpack( oldcol ) )
+			lg.setColor( unpack( oldcol ) )
 		end		
 	end )
 	
-	love.graphics.setColor( 255, 255, 255, fade_color.alpha )
-	love.graphics.rectangle( "fill", 0, 0, screen.getRenderWidth(), screen.getRenderHeight() )
-	love.graphics.setColor( Color.White:unpack() )
+	lg.setColor( 255, 255, 255, fade_color.alpha )
+	lg.rectangle( "fill", 0, 0, screen.getRenderWidth(), screen.getRenderHeight() )
+	lg.setColor( Color.White:unpack() )
 	
 end
 

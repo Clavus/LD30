@@ -3,6 +3,8 @@ local Person = class("Person", Entity)
 Person:include( PhysicsActor )
 Person:include( CollisionResolver )
 
+local lg = love.graphics
+
 local state = {
 	neutral = { face = ":|", color = Color.Gray },
 
@@ -35,8 +37,15 @@ function Person:initialize( world )
 	self.boost_emotionscale = 0
 	self:computeState()
 	
+	self.img_aura_light = resource.getImage(FOLDER.ASSETS.."aura_light.png")
+	self.img_aura_dark = resource.getImage(FOLDER.ASSETS.."aura_dark.png")
+	self.light_scale = (self.base_emotionscale > 0.5 and 1 or 0)
+	
+	--self.snd_loveupgrade = resource.getSound(FOLDER.ASSETS.."
+	
 	--local impulse = angle.forward( math.random() * math.pi * 2 ) * (math.random() * 100)
 	--self:getBody():applyLinearImpulse( impulse.x, impulse.y )
+	self.light_scale = 1 - self.base_emotionscale
 	
 	self.connections = {}
 
@@ -58,6 +67,7 @@ function Person:setState( emotion, state )
 		self.base_emotionscale = 0.95
 	end
 	
+	self.light_scale = 1 - self.base_emotionscale
 	self:computeState()
 	
 end
@@ -83,7 +93,9 @@ function Person:update( dt )
 			return false
 		end )
 		
-	end	
+	end
+
+	self.light_scale = math.approach(self.light_scale, self:getEmotionScale(), dt)
 
 end
 
@@ -93,16 +105,25 @@ function Person:draw()
 	local ang = self:getAngle()
 	local d = math.sqrt( fw * fw + fh * fh ) / 2
 	local fx, fy = (angle.forward( ang + (math.pi / 4) ) * d):unpack()
-	
-	local oldcol = { love.graphics.getColor() }
-	local oldfont = love.graphics.getFont()
-	
-	love.graphics.setColor( state[self.state].color:unpack() )
-	love.graphics.setFont( face_font )
-	
 	local x, y = self:getPos()
-	love.graphics.circle( "line", x, y, self.radius, 32 )
-	love.graphics.print( state[self.state].face, x - fx, y - fy, ang )
+	
+	local oldcol = { lg.getColor() }
+	local oldfont = lg.getFont()
+	
+	local lcol = Color.White:copy()
+	lcol.a = (1 - self.light_scale) * 255
+	lg.setColor( lcol:unpack() )
+	lg.draw( self.img_aura_dark, x - self.img_aura_dark:getWidth() / 2, y - self.img_aura_dark:getHeight() / 2 )
+	
+	lcol.a = self.light_scale * 255
+	lg.setColor( lcol:unpack() )
+	lg.draw( self.img_aura_light, x - self.img_aura_light:getWidth() / 2, y - self.img_aura_light:getHeight() / 2 )
+	
+	lg.setColor( state[self.state].color:unpack() )
+	lg.setFont( face_font )
+	
+	lg.circle( "line", x, y, self.radius, 32 )
+	lg.print( state[self.state].face, x - fx, y - fy, ang )
 	
 	--love.graphics.print( self:getEntIndex(), x - 6, y - 22 )
 	
@@ -111,8 +132,8 @@ function Person:draw()
 	--love.graphics.line( x, y, x, y + 4 )
 	--love.graphics.print( (ang % (math.pi * 2)), x, y - 40 )
 	
-	love.graphics.setColor( unpack( oldcol ) )
-	love.graphics.setFont( oldfont )
+	lg.setColor( unpack( oldcol ) )
+	lg.setFont( oldfont )
 	
 end
 

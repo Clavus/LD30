@@ -7,7 +7,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   properties = {
-    ["max_attempts"] = "20"
+    ["max_attempts"] = "12"
   },
   tilesets = {},
   layers = {
@@ -22,8 +22,8 @@ return {
           name = "",
           type = "CameraStartPos",
           shape = "rectangle",
-          x = 1603,
-          y = 841,
+          x = 1617,
+          y = 875,
           width = 0,
           height = 0,
           visible = true,
@@ -31,25 +31,12 @@ return {
         },
         {
           name = "",
-          type = "Text",
-          shape = "rectangle",
-          x = 1602,
-          y = 750,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["string"] = "From now on, you have limited pushes..."
-          }
-        },
-        {
-          name = "",
           type = "Wall",
           shape = "rectangle",
-          x = 908,
-          y = 1352,
-          width = 1396,
-          height = 46,
+          x = 736,
+          y = 1536,
+          width = 1768,
+          height = 52,
           visible = true,
           properties = {}
         },
@@ -57,10 +44,10 @@ return {
           name = "",
           type = "Wall",
           shape = "rectangle",
-          x = 2308,
-          y = 337,
-          width = 43,
-          height = 1011,
+          x = 663,
+          y = 345,
+          width = 64,
+          height = 1184,
           visible = true,
           properties = {}
         },
@@ -68,10 +55,10 @@ return {
           name = "",
           type = "Wall",
           shape = "rectangle",
-          x = 855,
-          y = 337,
-          width = 43,
-          height = 1011,
+          x = 736,
+          y = 288,
+          width = 1768,
+          height = 52,
           visible = true,
           properties = {}
         },
@@ -79,10 +66,76 @@ return {
           name = "",
           type = "Wall",
           shape = "rectangle",
-          x = 902,
-          y = 279,
-          width = 1396,
-          height = 46,
+          x = 2510,
+          y = 344,
+          width = 64,
+          height = 1184,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 736,
+          y = 768,
+          width = 320,
+          height = 224,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 2176,
+          y = 768,
+          width = 320,
+          height = 224,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 1504,
+          y = 352,
+          width = 224,
+          height = 288,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 1728,
+          y = 864,
+          width = 34,
+          height = 32,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 1502,
+          y = 1224,
+          width = 224,
+          height = 288,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "Wall",
+          shape = "rectangle",
+          x = 1472,
+          y = 864,
+          width = 34,
+          height = 32,
           visible = true,
           properties = {}
         },
@@ -90,8 +143,8 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1257,
-          y = 892,
+          x = 1984,
+          y = 1340,
           width = 0,
           height = 0,
           visible = true,
@@ -104,8 +157,8 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1286,
-          y = 919,
+          x = 1008,
+          y = 588,
           width = 0,
           height = 0,
           visible = true,
@@ -118,8 +171,8 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 2095,
-          y = 776,
+          x = 2260,
+          y = 1214,
           width = 0,
           height = 0,
           visible = true,
@@ -132,50 +185,8 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1412,
-          y = 613,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "content"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1653,
-          y = 595,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "content"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1782,
-          y = 1126,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "happiness",
-            ["state"] = "happy"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1821,
-          y = 1104,
+          x = 1010,
+          y = 1290,
           width = 0,
           height = 0,
           visible = true,
@@ -188,8 +199,64 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1258,
-          y = 1147,
+          x = 1918,
+          y = 466,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "loving",
+            ["state"] = "angry"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 2250,
+          y = 604,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "loving",
+            ["state"] = "angry"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 1150,
+          y = 480,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "happiness",
+            ["state"] = "sad"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 2212,
+          y = 568,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "happiness",
+            ["state"] = "sad"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 1268,
+          y = 1344,
           width = 0,
           height = 0,
           visible = true,
@@ -202,8 +269,8 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 2130,
-          y = 991,
+          x = 2020,
+          y = 1308,
           width = 0,
           height = 0,
           visible = true,
@@ -216,70 +283,70 @@ return {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1841,
-          y = 587,
+          x = 1828,
+          y = 812,
           width = 0,
           height = 0,
           visible = true,
           properties = {
-            ["emotion"] = "loving",
-            ["state"] = "uncaring"
+            ["emotion"] = "happiness",
+            ["state"] = "happy"
           }
         },
         {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 2101,
-          y = 1259,
+          x = 1396,
+          y = 996,
           width = 0,
           height = 0,
           visible = true,
           properties = {
-            ["emotion"] = "loving",
-            ["state"] = "interested"
+            ["emotion"] = "happiness",
+            ["state"] = "happy"
           }
         },
         {
           name = "",
           type = "Person",
           shape = "rectangle",
-          x = 1152,
-          y = 635,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "interested"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1049,
-          y = 966,
-          width = 0,
-          height = 0,
-          visible = true,
-          properties = {
-            ["emotion"] = "loving",
-            ["state"] = "interested"
-          }
-        },
-        {
-          name = "",
-          type = "Person",
-          shape = "rectangle",
-          x = 1788,
-          y = 863,
+          x = 1408,
+          y = 786,
           width = 0,
           height = 0,
           visible = true,
           properties = {
             ["emotion"] = "loving",
             ["state"] = "loving"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 1816,
+          y = 998,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "loving",
+            ["state"] = "loving"
+          }
+        },
+        {
+          name = "",
+          type = "Person",
+          shape = "rectangle",
+          x = 1618,
+          y = 808,
+          width = 0,
+          height = 0,
+          visible = true,
+          properties = {
+            ["emotion"] = "happiness",
+            ["state"] = "content"
           }
         }
       }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="max_attempts" value="12"/>
+ </properties>
+ <objectgroup name="objects" width="100" height="100">
+  <object type="CameraStartPos" x="1617" y="875"/>
+  <object type="Wall" x="736" y="1536" width="1768" height="52"/>
+  <object type="Wall" x="663" y="345" width="64" height="1184"/>
+  <object type="Wall" x="736" y="288" width="1768" height="52"/>
+  <object type="Wall" x="2510" y="344" width="64" height="1184"/>
+  <object type="Wall" x="736" y="768" width="320" height="224"/>
+  <object type="Wall" x="2176" y="768" width="320" height="224"/>
+  <object type="Wall" x="1504" y="352" width="224" height="288"/>
+  <object type="Wall" x="1728" y="864" width="34" height="32"/>
+  <object type="Wall" x="1502" y="1224" width="224" height="288"/>
+  <object type="Wall" x="1472" y="864" width="34" height="32"/>
+  <object type="Person" x="1984" y="1340">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="depressed"/>
+   </properties>
+  </object>
+  <object type="Person" x="1008" y="588">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="depressed"/>
+   </properties>
+  </object>
+  <object type="Person" x="2260" y="1214">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="depressed"/>
+   </properties>
+  </object>
+  <object type="Person" x="1010" y="1290">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="angry"/>
+   </properties>
+  </object>
+  <object type="Person" x="1918" y="466">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="angry"/>
+   </properties>
+  </object>
+  <object type="Person" x="2250" y="604">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="angry"/>
+   </properties>
+  </object>
+  <object type="Person" x="1150" y="480">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="sad"/>
+   </properties>
+  </object>
+  <object type="Person" x="2212" y="568">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="sad"/>
+   </properties>
+  </object>
+  <object type="Person" x="1268" y="1344">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="uncaring"/>
+   </properties>
+  </object>
+  <object type="Person" x="2020" y="1308">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="uncaring"/>
+   </properties>
+  </object>
+  <object type="Person" x="1828" y="812">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="happy"/>
+   </properties>
+  </object>
+  <object type="Person" x="1396" y="996">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="happy"/>
+   </properties>
+  </object>
+  <object type="Person" x="1408" y="786">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="loving"/>
+   </properties>
+  </object>
+  <object type="Person" x="1816" y="998">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="loving"/>
+   </properties>
+  </object>
+  <object type="Person" x="1618" y="808">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="content"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

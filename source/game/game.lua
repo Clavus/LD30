@@ -19,7 +19,7 @@ end
 
 function game.draw()
 		
-	love.graphics.setBackgroundColor( 30, 30, 40 )
+	love.graphics.setBackgroundColor( 40, 40, 50 )
 	love.graphics.clear()
 	gamestate.drawStack()
 	
