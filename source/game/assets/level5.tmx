@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <objectgroup name="objects" width="100" height="100">
+  <object type="Person" x="980" y="367">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="impulse_x" value="200"/>
+    <property name="state" value="interested"/>
+   </properties>
+  </object>
+  <object type="Person" x="1019" y="537">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="depressed"/>
+   </properties>
+  </object>
+  <object type="CameraStartPos" x="1281" y="403"/>
+  <object type="Person" x="1521" y="459">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="angry"/>
+   </properties>
+  </object>
+  <object type="Text" x="1280" y="160">
+   <properties>
+    <property name="string" value="Press &quot;R&quot; to restart if you get stuck"/>
+   </properties>
+  </object>
+  <object type="Wall" x="581" y="212" width="47" height="449"/>
+  <object type="Person" x="1430" y="324">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="impulse_x" value="30"/>
+    <property name="impulse_y" value="250"/>
+    <property name="state" value="content"/>
+   </properties>
+  </object>
+  <object type="Wall" x="640" y="192" width="1396" height="46"/>
+  <object type="Person" x="1061" y="505">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="interested"/>
+   </properties>
+  </object>
+  <object type="Person" x="1561" y="423">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="content"/>
+   </properties>
+  </object>
+  <object type="Wall" x="640" y="640" width="1396" height="46"/>
+  <object type="Text" x="1280" y="128">
+   <properties>
+    <property name="string" value="Make everyone happy by connecting to the right friends"/>
+   </properties>
+  </object>
+  <object type="Wall" x="2048" y="219" width="47" height="449"/>
+ </objectgroup>
+</map>

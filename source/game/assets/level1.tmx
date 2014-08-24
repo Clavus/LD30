@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <objectgroup name="objects" width="100" height="100">
+  <object type="Wall" x="248" y="263" width="55" height="365"/>
+  <object type="Wall" x="316" y="219" width="744" height="51"/>
+  <object type="Wall" x="1070" y="267" width="55" height="365"/>
+  <object type="Wall" x="312" y="621" width="744" height="51"/>
+  <object type="Person" x="932" y="454">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="sad"/>
+   </properties>
+  </object>
+  <object type="Person" x="447" y="452">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="happy"/>
+   </properties>
+  </object>
+  <object type="CameraStartPos" x="696" y="371"/>
+  <object type="Text" x="697" y="167">
+   <properties>
+    <property name="string" value="Then drag and release to get things moving..."/>
+   </properties>
+  </object>
+  <object type="Text" x="697" y="135">
+   <properties>
+    <property name="string" value="Click on a person (the emotes) with left mouse"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

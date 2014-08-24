@@ -1,7 +1,7 @@
 
 local start = os.clock()
 local _curTime, _prntcnt = 0, 0
-local _gameTitle = "LD30"
+local _gameTitle = "Make Some Friends!"
 
 nilfunction = function() end -- null function so you can do "(a or nilfunction)(...)"  instead of "if (a != nil) then a(...) end".
 currentTime = function() return _curTime end
@@ -43,7 +43,7 @@ function love.load()
 	game.load()
 	
 	-------------------------------------------------------
-	print("-- Initializing ".._gameTitle.." --")
+	print("-- Initialized ".._gameTitle.." --")
 	print("Loaded libraries in "..math.round(libdiff*1000).."ms")
 	
 	local initdiff = os.clock() - start

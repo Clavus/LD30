@@ -10,6 +10,12 @@ function Color:initialize( r, g, b, a )
 	
 end
 
+function Color:copy()
+
+	return Color( self.r, self.g, self.b, self.a )
+
+end
+
  local RGBtoHSV = function(r, g, b, a)
 	
 	r, g, b = r / 255, g / 255, b / 255
@@ -150,6 +156,16 @@ Color.static.fromHSV = function(h, s, v, a)
 	
 end
 
+Color.static.lerp = function( color1, color2, frac )
+
+	local new_r = color1.r + (color2.r - color1.r) * frac
+	local new_g = color1.g + (color2.g - color1.g) * frac
+	local new_b = color1.b + (color2.b - color1.b) * frac
+	local new_a = color1.a + (color2.a - color1.a) * frac
+	return Color(new_r, new_g, new_b, new_a)
+
+end
+
 -- HTML colors: http://www.w3schools.com/html/html_colornames.asp --
 
 Color.static.AliceBlue = Color( 240, 248, 255 )
@@ -216,7 +232,7 @@ Color.static.Indigo = Color( 75, 0, 130 )
 Color.static.Ivory = Color( 255, 255, 240 )
 Color.static.Khaki = Color( 240, 230, 140 )
 Color.static.Lavender = Color( 230, 230, 250 )
-Color.static.Lavenderblush = Color( 255, 240, 245 )
+Color.static.LavenderBlush = Color( 255, 240, 245 )
 Color.static.LawnGreen = Color( 124, 252, 0 )
 Color.static.LemonChiffon = Color( 255, 250, 205 )
 Color.static.LightBlue = Color( 173, 216, 230 )
@@ -239,7 +255,7 @@ Color.static.LimeGreen = Color( 50, 205, 50 )
 Color.static.Linen = Color( 250, 240, 230 )
 Color.static.Magenta = Color( 255, 0, 255 )
 Color.static.Maroon = Color( 128, 0, 0 )
-Color.static.Mediumaquamarine = Color( 102, 205, 170 )
+Color.static.MediumAquamarine = Color( 102, 205, 170 )
 Color.static.MediumBlue = Color( 0, 0, 205 )
 Color.static.MediumOrchid = Color( 186, 85, 211 )
 Color.static.MediumPurple = Color( 147, 112, 219 )
@@ -256,7 +272,7 @@ Color.static.NavajoWhite = Color( 255, 222, 173 )
 Color.static.Navy = Color( 0, 0, 128 )
 Color.static.OldLace = Color( 253, 245, 230 )
 Color.static.Olive = Color( 128, 128, 0 )
-Color.static.Olivedrab = Color( 107, 142, 35 )
+Color.static.OliveDrab = Color( 107, 142, 35 )
 Color.static.Orange = Color( 255, 165, 0 )
 Color.static.OrangeRed = Color( 255, 69, 0 )
 Color.static.Orchid = Color( 218, 112, 214 )

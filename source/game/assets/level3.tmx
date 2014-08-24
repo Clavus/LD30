@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <objectgroup name="objects" width="100" height="100">
+  <object type="Wall" x="706" y="265" width="95" height="456"/>
+  <object type="Wall" x="1144" y="227" width="64" height="544"/>
+  <object type="Wall" x="384" y="736" width="744" height="51"/>
+  <object type="Person" x="531" y="406">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="loving"/>
+   </properties>
+  </object>
+  <object type="Person" x="998" y="652">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="depressed"/>
+   </properties>
+  </object>
+  <object type="CameraStartPos" x="751" y="429"/>
+  <object type="Text" x="1120" y="160">
+   <properties>
+    <property name="string" value="Depressed people need happy people"/>
+   </properties>
+  </object>
+  <object type="Person" x="527" y="648">
+   <properties>
+    <property name="emotion" value="loving"/>
+    <property name="state" value="angry"/>
+   </properties>
+  </object>
+  <object type="Text" x="416" y="160">
+   <properties>
+    <property name="string" value="Angry people need caring people"/>
+   </properties>
+  </object>
+  <object type="Wall" x="300" y="225" width="64" height="544"/>
+  <object type="Wall" x="381" y="205" width="744" height="51"/>
+  <object type="Person" x="994" y="398">
+   <properties>
+    <property name="emotion" value="happiness"/>
+    <property name="state" value="happy"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

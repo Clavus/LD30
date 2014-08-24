@@ -7,44 +7,83 @@ local state = {
 	neutral = { face = ":|", color = Color.Gray },
 
 	depressed = { face = "._.", color = Color.SlateBlue },
-	sad = { face = ":(", color = Color.SteelBlue },
-	content = { face = ":)", color = Color.ForestGreen },
-	happy = { face = ":D", color = Color.Lime },
+	sad = { face = ":(", color = Color.lerp(Color.SlateBlue, Color.PowderBlue, 0.333) },
+	content = { face = ":)", color = Color.lerp(Color.SlateBlue, Color.PowderBlue, 0.666) },
+	happy = { face = ":D", color = Color.PowderBlue },
 	
 	angry = { face = ">:(", color = Color.Maroon },
-	uncaring = { face = ":/", color = Color.Brown },
-	interested = { face = ":o", color = Color.Pink },
-	loving = { face = ":3", color = Color.PaleVioletRed }
+	uncaring = { face = ":/", color = Color.lerp(Color.Maroon, Color.Pink, 0.333) },
+	interested = { face = ";)", color = Color.lerp(Color.Maroon, Color.Pink, 0.666) },
+	loving = { face = ":3", color = Color.Pink }
 }
 
-local face_font = love.graphics.newFont( 16 )
+local face_font = love.graphics.newFont( 24 )
 
 function Person:initialize( world )
 
 	Entity.initialize( self )
 	PhysicsActor.initialize( self, world )
 	
+	self.physworld = world
 	self.radius = 32
 	self.shape = love.physics.newCircleShape( self.radius )
 	
-	local fixture = love.physics.newFixture( self:getBody(), self.shape )
+	self.fixture = love.physics.newFixture( self:getBody(), self.shape )
 	
 	self.emotion = util.choose("happiness", "loving")
 	self.base_emotionscale = util.choose(0.2, 0.45, 0.7, 0.95)
 	self.boost_emotionscale = 0
 	self:computeState()
 	
-	local impulse = angle.forward( math.random() * math.pi * 2 ) * (math.random() * 100)
-	
-	self:getBody():applyLinearImpulse( impulse.x, impulse.y )
+	--local impulse = angle.forward( math.random() * math.pi * 2 ) * (math.random() * 100)
+	--self:getBody():applyLinearImpulse( impulse.x, impulse.y )
 	
 	self.connections = {}
+
+end
+
+function Person:setState( emotion, state )
+	
+	self.emotion = emotion
+	self.state = state
+	self.boost_emotionscale = 0
+	
+	if (self.state == "depressed" or self.state == "angry") then
+		self.base_emotionscale = 0.2
+	elseif (self.state == "sad" or self.state == "uncaring") then
+		self.base_emotionscale = 0.45
+	elseif (self.state == "content" or self.state == "interested") then
+		self.base_emotionscale = 0.7
+	else
+		self.base_emotionscale = 0.95
+	end
+	
+	self:computeState()
 	
 end
 
-function Person:update()
+function Person:update( dt )
 
-	
+	if (self.state == "angry" or self.state == "uncaring") then
+		
+		local px, py = self:getPos()
+		local push_distance = 180
+		
+		self.physworld:queryBoundingBox( px - push_distance, py - push_distance, px + push_distance, py + push_distance, function( fix )
+			local force = 500
+			if (self.state == "uncaring") then force = 250 end
+			local other = fix:getUserData() or fix:getBody():getUserData()
+			if (other:isInstanceOf( Person ) and other ~= self and not self:isConnectedTo(other)) then
+				local dvec = Vector(self:getPos()) - Vector(other:getPos())
+				
+				if (dvec:length() < push_distance ) then
+					self:getBody():applyForce( (dvec:normalize() * force):unpack() )
+				end
+			end
+			return false
+		end )
+		
+	end	
 
 end
 
@@ -83,21 +122,24 @@ function Person:computeState()
 	self.state = "neutral"
 	
 	self:getBody():setLinearDamping( 0 )
+	self.fixture:setRestitution( 1.0 )
 	
 	if (self.emotion == "happiness") then
 		if (scale < 0.25) then 
 			self.state = "depressed"
 			self:getBody():setLinearDamping( 10 )
+			self.fixture:setRestitution( 0.2 )
 		elseif (scale < 0.5) then 
 			self.state = "sad"
 			self:getBody():setLinearDamping( 0.5 )
-		elseif (scale >= 0.5) then self.state = "content"
+			self.fixture:setRestitution( 0.5 )
+		elseif (scale >= 0.5 and scale < 0.75) then self.state = "content"
 		elseif (scale >= 0.75) then self.state = "happy"
 		end
 	else
 		if (scale < 0.25) then self.state = "angry"
 		elseif (scale < 0.5) then self.state = "uncaring"
-		elseif (scale >= 0.5) then self.state = "interested"
+		elseif (scale >= 0.5 and scale < 0.75) then self.state = "interested"
 		elseif (scale >= 0.75) then self.state = "loving"
 		end
 	end
@@ -122,15 +164,25 @@ function Person:connectTo( otherPerson )
 	if (otherPerson.emotion == self.emotion) then
 		local diff = otherPerson:getEmotionScale() - self:getEmotionScale()
 		
-		if (diff > 0 and otherPerson:getEmotionScale() >= 0.5) then
-			self.boost_emotionscale = self.boost_emotionscale + 0.25
-		elseif (diff < 0 and self:getEmotionScale() >= 0.5) then
-			otherPerson.boost_emotionscale = otherPerson.boost_emotionscale + 0.25
+		if (diff > 0) then
+			if (otherPerson:getEmotionScale() >= 0.75) then
+				self.boost_emotionscale = math.min(0.95, self.boost_emotionscale + 0.5)
+			elseif (otherPerson:getEmotionScale() >= 0.5) then
+				self.boost_emotionscale = math.min(0.95, self.boost_emotionscale + 0.25)
+			end
+		elseif (diff < 0) then
+			if (self:getEmotionScale() >= 0.75) then
+				otherPerson.boost_emotionscale = math.min(0.95, otherPerson.boost_emotionscale + 0.5)
+			elseif (self:getEmotionScale() >= 0.5) then
+				otherPerson.boost_emotionscale = math.min(0.95, otherPerson.boost_emotionscale + 0.25)
+			end
 		end
 	end	
 	
 	self:computeState()
 	otherPerson:computeState()
+	
+	signal.emit("connection_made", self, otherPerson)
 	
 end
 

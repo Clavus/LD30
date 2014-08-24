@@ -31,3 +31,9 @@ function game.handleTrigger( trigger, other, contact, trigger_type, ...)
 	return gamestate.handleTrigger( trigger, other, contact, trigger_type, ...)
 	
 end
+
+function game.createLevelEntity( level, entData )
+	
+	return gamestate.createLevelEntity( level, entData )
+
+end
